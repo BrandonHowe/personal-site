@@ -1,0 +1,45 @@
+---
+import { getEntry, render } from "astro:content";
+import Base from "../layouts/Base.astro";
+import PageHeader from "../components/PageHeader.astro";
+
+const page = await getEntry("pages", "contact");
+if (!page) throw new Error("Missing src/content/pages/contact.md");
+const { Content } = await render(page);
+
+const rows = page.data.rows ?? [];
+---
+
+<Base title="Contact" description={page.data.description}>
+  {/* The description is metadata for search results, not on-page copy. */}
+  <PageHeader title="Contact" />
+
+  <div class="prose">
+    <Content />
+  </div>
+
+  <ul class="contact-list">
+    {
+      rows.map((row) => (
+        <li class="contact-list__item">
+          <span class="contact-list__key">{row.key}</span>
+          <span class="contact-list__value">
+            {row.href ? (
+              <a
+                href={row.href}
+                target={row.href.startsWith("http") ? "_blank" : undefined}
+                rel={
+                  row.href.startsWith("http") ? "noopener noreferrer" : undefined
+                }
+              >
+                {row.label}
+              </a>
+            ) : (
+              row.label
+            )}
+          </span>
+        </li>
+      ))
+    }
+  </ul>
+</Base>

@@ -1,0 +1,123 @@
+---
+import { render, type CollectionEntry } from "astro:content";
+import CompanyLogo from "./CompanyLogo.astro";
+
+type Entry = CollectionEntry<"work"> | CollectionEntry<"projects">;
+
+interface Props {
+  entries: Entry[];
+  /** Show a logo (or lettermark) beside each entry. Used on /work. */
+  showLogos?: boolean;
+}
+
+const { entries, showLogos = false } = Astro.props;
+
+// The markdown body of each entry is its description.
+const rendered = await Promise.all(
+  entries.map(async (entry) => ({
+    entry,
+    Content: (await render(entry)).Content,
+  }))
+);
+---
+
+<ul class:list={["annotated-list", showLogos && "annotated-list--with-logos"]}>
+  {
+    rendered.map(({ entry, Content }) => {
+      const data = entry.data as Entry["data"] & {
+        company?: string;
+        logo?: string;
+        logoDark?: string;
+      };
+      const label = data.company ?? data.title;
+
+      return (
+        <li class="annotated-list__item">
+          {showLogos && (
+            <div class="annotated-list__logo">
+              {data.href ? (
+                <a
+                  href={data.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                >
+                  <CompanyLogo logo={data.logo} logoDark={data.logoDark} name={label} />
+                </a>
+              ) : (
+                <CompanyLogo logo={data.logo} logoDark={data.logoDark} name={label} />
+              )}
+            </div>
+          )}
+
+          <div class="annotated-list__body">
+            <div class="annotated-list__row">
+              {/* On /work the link belongs to the company; on /projects there
+                  is no company, so the title carries it. */}
+              <h2 class="annotated-list__title">
+                {data.href && !data.company ? (
+                  <a href={data.href} target="_blank" rel="noopener noreferrer">
+                    {data.title}
+                  </a>
+                ) : (
+                  data.title
+                )}
+              </h2>
+              {data.company && (
+                <span class="annotated-list__subtitle">
+                  {data.href ? (
+                    <a href={data.href} target="_blank" rel="noopener noreferrer">
+                      {data.company}
+                    </a>
+                  ) : (
+                    data.company
+                  )}
+                </span>
+              )}
+              {data.dates && (
+                <span class="annotated-list__meta">{data.dates}</span>
+              )}
+            </div>
+
+            <div class="annotated-list__note">
+              <Content />
+            </div>
+
+            {data.tags && data.tags.length > 0 && (
+              <div class="tag-row">
+                {data.tags.map((tag: string) => (
+                  <span class="tag">{tag}</span>
+                ))}
+              </div>
+            )}
+
+            {data.links && data.links.length > 0 && (
+              <div class="annotated-list__links">
+                {data.links.map((link) =>
+                  link.href ? (
+                    <a
+                      href={link.href}
+                      target={
+                        link.href.startsWith("http") ? "_blank" : undefined
+                      }
+                      rel={
+                        link.href.startsWith("http")
+                          ? "noopener noreferrer"
+                          : undefined
+                      }
+                    >
+                      {link.label}
+                    </a>
+                  ) : (
+                    /* No href — a stated absence, not a broken link. */
+                    <span class="annotated-list__links-muted">{link.label}</span>
+                  )
+                )}
+              </div>
+            )}
+          </div>
+        </li>
+      );
+    })
+  }
+</ul>

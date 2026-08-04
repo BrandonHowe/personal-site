@@ -1,0 +1,67 @@
+---
+import { getCollection, getEntry, render } from "astro:content";
+import Base from "../layouts/Base.astro";
+import PageHeader from "../components/PageHeader.astro";
+import { pageMeta } from "../config";
+import { isoDate, longDate } from "../lib/dates";
+
+const page = await getEntry("pages", "presentations");
+if (!page) throw new Error("Missing src/content/pages/presentations.md");
+const { Content: Intro } = await render(page);
+
+/** Newest first; undated talks keep their listed order, after the dated ones. */
+function byDateDesc<T extends { date?: Date }>(items: T[]): T[] {
+  return [...items].sort((a, b) => {
+    if (a.date && b.date) return b.date.valueOf() - a.date.valueOf();
+    if (a.date) return -1;
+    if (b.date) return 1;
+    return 0;
+  });
+}
+
+const groups = (await getCollection("talks"))
+  .sort((a, b) => a.data.order - b.data.order)
+  .map((entry) => ({
+    heading: entry.data.title,
+    talks: byDateDesc(entry.data.talks),
+  }));
+
+const { title } = pageMeta.presentations;
+---
+
+<Base title={title} description={page.data.description}>
+  <PageHeader title={title} />
+
+  <div class="prose page-intro">
+    <Intro />
+  </div>
+
+  {
+    groups.map(({ heading, talks }) => (
+      <section class="talk-section">
+        <h2 class="talk-section__heading">{heading}</h2>
+        <ul class="annotated-list">
+          {talks.map((talk) => (
+            <li class="annotated-list__item">
+              <div class="annotated-list__row">
+                <h3 class="annotated-list__title">
+                  {talk.slides ? (
+                    <a href={talk.slides}>{talk.title}</a>
+                  ) : (
+                    talk.title
+                  )}
+                </h3>
+                {talk.date && (
+                  <time class="annotated-list__meta" datetime={isoDate(talk.date)}>
+                    {longDate(talk.date)}
+                  </time>
+                )}
+              </div>
+              {talk.note && <p class="annotated-list__note">{talk.note}</p>}
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))
+  }
+</Base>

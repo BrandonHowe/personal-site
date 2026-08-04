@@ -1,0 +1,59 @@
+---
+import { getEntry, render } from "astro:content";
+import { Picture } from "astro:assets";
+import Base from "../layouts/Base.astro";
+import headshot from "../assets/headshot.jpg";
+import { elsewhere, site } from "../config";
+
+const home = await getEntry("pages", "home");
+if (!home) throw new Error("Missing src/content/pages/home.md");
+const { Content } = await render(home);
+
+const links = [...elsewhere, { label: "Email", href: `mailto:${site.email}` }];
+---
+
+<Base description={home.data.description}>
+  <div class="home-intro prose">
+    {/* Emits AVIF/WebP at 1x and 2x, with a JPEG fallback. Displayed at
+        160px, so 320px covers retina. */}
+    <Picture
+      class="headshot"
+      src={headshot}
+      alt={site.name}
+      widths={[160, 320]}
+      sizes="160px"
+      formats={["avif", "webp"]}
+      fallbackFormat="jpg"
+      loading="eager"
+    />
+    {
+      home.data.heading && (
+        <h1
+          class:list={[
+            home.data.hideHeading ? "visually-hidden" : "home-heading",
+          ]}
+        >
+          {home.data.heading}
+        </h1>
+      )
+    }
+    <Content />
+  </div>
+
+  <hr class="divider" />
+
+  <div class="home-elsewhere">
+    <span class="home-elsewhere__label">Elsewhere:</span>
+    {
+      links.map((link) => (
+        <a
+          href={link.href}
+          target={link.href.startsWith("http") ? "_blank" : undefined}
+          rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
+        >
+          {link.label}
+        </a>
+      ))
+    }
+  </div>
+</Base>

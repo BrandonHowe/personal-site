@@ -1,0 +1,68 @@
+---
+import { existsSync } from "node:fs";
+import { imageSize } from "../lib/imageSize";
+
+interface Props {
+  /** Filename inside public/logos/, e.g. "agatha.png" */
+  logo?: string;
+  /** Optional variant for dark mode, when the logo is drawn in dark ink. */
+  logoDark?: string;
+  /** Used for the alt text and the lettermark fallback. */
+  name: string;
+}
+
+const { logo, logoDark, name } = Astro.props;
+
+// Resolved at build time — a missing file degrades to the lettermark instead
+// of a broken image, and costs no client JS.
+const resolve = (file?: string) =>
+  file && existsSync(`public/logos/${file}`) ? `/logos/${file}` : null;
+
+const src = resolve(logo);
+const srcDark = resolve(logoDark);
+
+// A square app icon needs more height than a wide wordmark to carry the same
+// visual weight, so size the box from the artwork's own proportions.
+const size = logo ? imageSize(`public/logos/${logo}`) : null;
+const isSquare = size ? size.width / size.height < 1.6 : false;
+
+const classes = (variant?: "light" | "dark") => [
+  "company-logo",
+  isSquare && "company-logo--square",
+  variant === "light" && "company-logo--light-only",
+  variant === "dark" && "company-logo--dark-only",
+];
+
+const initial = name.trim().charAt(0).toUpperCase();
+---
+
+{
+  src ? (
+    <>
+      <img
+        class:list={classes(srcDark ? "light" : undefined)}
+        src={src}
+        alt={`${name} logo`}
+        width={size?.width}
+        height={size?.height}
+        loading="lazy"
+      />
+      {/* Some logos are drawn in dark ink and vanish on a dark background;
+          when a variant exists, CSS swaps to it. */}
+      {srcDark && (
+        <img
+          class:list={classes("dark")}
+          src={srcDark}
+          alt={`${name} logo`}
+          width={size?.width}
+          height={size?.height}
+          loading="lazy"
+        />
+      )}
+    </>
+  ) : (
+    <span class="company-logo company-logo--letter" aria-hidden="true">
+      {initial}
+    </span>
+  )
+}

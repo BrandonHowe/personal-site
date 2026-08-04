@@ -1,0 +1,1147 @@
+/* ==========================================================================
+   Design tokens
+   ========================================================================== */
+
+:root {
+  /* Warm neutrals rather than pure grey — reads softer on screen. */
+  --bg: #fdfdfc;
+  --bg-elevated: #ffffff;
+  --bg-subtle: #f4f4f1;
+
+  --text: #191917;
+  --text-secondary: #45443f;
+  --dim: #78776f;
+
+  --accent: #4f46e5;
+  --accent-hover: #4338ca;
+  --accent-subtle: rgba(79, 70, 229, 0.09);
+
+  --border: #e4e3de;
+  --border-strong: #d2d1ca;
+  --border-subtle: #ecebe6;
+  --selection: rgba(79, 70, 229, 0.16);
+
+  --font-body: "Inter", ui-sans-serif, -apple-system, BlinkMacSystemFont,
+    "Segoe UI Variable Text", "Segoe UI", Roboto, "Helvetica Neue", Arial,
+    sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", "Fira Code", Consolas,
+    monospace;
+
+  --font-size-base: 1.0625rem;
+  --font-size-small: 0.9375rem;
+  --font-size-mono: 0.8125rem;
+
+  --space-xs: 0.375rem;
+  --space-sm: 0.625rem;
+  --space-md: 1.25rem;
+  --space-lg: 2rem;
+  --space-xl: 3rem;
+  --space-2xl: 4.5rem;
+
+  --max-width: 720px;
+  --radius: 10px;
+  --radius-sm: 6px;
+
+  --transition-fast: 0.16s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-theme="dark"] {
+  --bg: #0f0f11;
+  --bg-elevated: #17171a;
+  --bg-subtle: #1a1a1e;
+
+  --text: #ebebe8;
+  --text-secondary: #c2c2bd;
+  --dim: #8e8e88;
+
+  --accent: #a5b4fc;
+  --accent-hover: #c7d2fe;
+  --accent-subtle: rgba(165, 180, 252, 0.14);
+
+  --border: #2a2a2f;
+  --border-strong: #3b3b42;
+  --border-subtle: #212126;
+  --selection: rgba(165, 180, 252, 0.22);
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  overflow-y: scroll;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+  background-color: var(--bg);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-body);
+  font-size: var(--font-size-base);
+  font-weight: 400;
+  line-height: 1.65;
+  letter-spacing: -0.011em;
+  color: var(--text);
+  background-color: var(--bg);
+  transition: background 0.3s, color 0.3s;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "cv05" 1;
+}
+
+::selection {
+  background: var(--selection);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0 0 var(--space-md) 0;
+  font-weight: 620;
+  text-wrap: balance;
+  letter-spacing: -0.025em;
+  color: var(--text);
+}
+
+h1 {
+  font-size: clamp(2rem, 1.7rem + 1.3vw, 2.6rem);
+  line-height: 1.1;
+  letter-spacing: -0.038em;
+  font-weight: 680;
+}
+
+h2 {
+  font-size: clamp(1.5rem, 1.35rem + 0.6vw, 1.75rem);
+  line-height: 1.2;
+  margin-top: 2.75rem;
+  margin-bottom: 1rem;
+  letter-spacing: -0.03em;
+}
+
+h3 {
+  font-size: 1.3125rem;
+  line-height: 1.3;
+  margin-top: 2.25rem;
+  margin-bottom: 0.75rem;
+}
+
+p {
+  margin: 0 0 var(--space-lg) 0;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  text-decoration-color: color-mix(in srgb, var(--accent) 35%, transparent);
+  transition: color var(--transition-fast),
+    text-decoration-color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--accent-hover);
+  text-decoration-color: currentColor;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2.5rem 0;
+}
+
+/* ==========================================================================
+   Layout
+   ========================================================================== */
+
+.main-content {
+  padding: 64px 28px 72px;
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+/* Removed from view but kept in the accessibility tree — unlike
+   display:none, which would hide it from screen readers too. */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: var(--bg-elevated);
+  color: var(--text);
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  z-index: 10;
+}
+
+.skip-link:focus {
+  left: 8px;
+  top: 8px;
+}
+
+/* ==========================================================================
+   Header
+   ========================================================================== */
+
+.header {
+  margin-bottom: 64px;
+}
+
+.header__inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 22px;
+}
+
+.header__name {
+  font-size: 1.1875rem;
+  font-weight: 640;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color var(--transition-fast);
+}
+
+.header__name:hover {
+  color: var(--accent);
+}
+
+.header__nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.35rem;
+  font-size: var(--font-size-small);
+}
+
+.header__nav-link {
+  display: inline-block;
+  color: var(--dim);
+  text-decoration: none;
+  position: relative;
+  padding: 2px 0;
+  transition: color var(--transition-fast);
+}
+
+/* The active link is heavier, and heavier text is wider — which would nudge
+   every link after it on each navigation. Reserve the bold width up front
+   with a zero-height copy so the row never reflows. */
+.header__nav-link::after {
+  content: attr(data-label);
+  display: block;
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  font-weight: 560;
+  pointer-events: none;
+  user-select: none;
+}
+
+.header__nav-link:hover {
+  color: var(--text);
+}
+
+.header__nav-link--active,
+.header__nav-link--active:hover {
+  color: var(--accent);
+  font-weight: 560;
+}
+
+/* ==========================================================================
+   Theme toggle
+   ========================================================================== */
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  background: none;
+  color: var(--dim);
+  cursor: pointer;
+  transition: color var(--transition-fast), background var(--transition-fast),
+    border-color var(--transition-fast);
+}
+
+.theme-toggle:hover {
+  color: var(--text);
+  background: var(--bg-subtle);
+  border-color: var(--border);
+}
+
+.theme-toggle__icon {
+  position: absolute;
+  transition: opacity var(--transition-fast), transform 0.3s
+    cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Show the icon for the mode you'd switch *to*. */
+.theme-toggle__icon--sun {
+  opacity: 0;
+  transform: rotate(-70deg) scale(0.6);
+}
+
+.theme-toggle__icon--moon {
+  opacity: 1;
+  transform: rotate(0) scale(1);
+}
+
+[data-theme="dark"] .theme-toggle__icon--sun {
+  opacity: 1;
+  transform: rotate(0) scale(1);
+}
+
+[data-theme="dark"] .theme-toggle__icon--moon {
+  opacity: 0;
+  transform: rotate(70deg) scale(0.6);
+}
+
+/* ==========================================================================
+   Prose
+   ========================================================================== */
+
+.prose {
+  line-height: 1.72;
+  overflow-wrap: break-word;
+}
+
+.prose > :first-child {
+  margin-top: 0;
+}
+
+/* A heading that's a link should still read as a heading — colour and
+   underline arrive on hover rather than shouting at rest. */
+.prose h1 a,
+.prose h2 a,
+.prose h3 a,
+.prose h4 a {
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.prose h1 a:hover,
+.prose h2 a:hover,
+.prose h3 a:hover,
+.prose h4 a:hover {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}
+
+.prose code {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-mono);
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-subtle);
+  padding: 0.15em 0.4em;
+  border-radius: var(--radius-sm);
+  overflow-wrap: anywhere;
+}
+
+.prose blockquote {
+  margin: var(--space-lg) 0;
+  padding-left: var(--space-md);
+  border-left: 2px solid var(--border-strong);
+  color: var(--text-secondary);
+}
+
+.prose pre {
+  background: var(--bg-subtle);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-subtle);
+  padding: var(--space-md);
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: var(--space-lg) 0;
+  font-size: var(--font-size-mono);
+}
+
+.prose pre code {
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.prose ul,
+.prose ol {
+  padding-left: var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+
+.prose li {
+  margin-bottom: var(--space-xs);
+}
+
+/* ==========================================================================
+   Home
+   ========================================================================== */
+
+.home-heading {
+  margin-bottom: 1.25rem;
+}
+
+.headshot {
+  float: right;
+  width: 160px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: var(--radius);
+  margin: 6px 0 1.25rem 2rem;
+  background: var(--bg-subtle);
+}
+
+.home-intro {
+  margin-bottom: var(--space-lg);
+}
+
+.home-intro p {
+  margin-bottom: 1.4em;
+}
+
+.home-intro p:last-child {
+  margin-bottom: 0;
+}
+
+.home-intro::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+.home-elsewhere {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.4rem 1.15rem;
+  font-size: var(--font-size-small);
+  color: var(--dim);
+}
+
+.home-elsewhere__label {
+  color: var(--dim);
+}
+
+.home-elsewhere a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.home-elsewhere a:hover {
+  color: var(--accent);
+}
+
+/* ==========================================================================
+   Page header
+   ========================================================================== */
+
+.page-header {
+  margin-bottom: 2.5rem;
+}
+
+.page-header__title {
+  font-size: clamp(2rem, 1.7rem + 1.3vw, 2.6rem);
+  font-weight: 680;
+  line-height: 1.1;
+  letter-spacing: -0.038em;
+  margin-bottom: 0.6rem;
+}
+
+.page-header__description {
+  max-width: 40rem;
+  color: var(--text-secondary);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  margin-bottom: 0;
+}
+
+/* ==========================================================================
+   Shared pieces
+   ========================================================================== */
+
+.label {
+  color: var(--dim);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 620;
+  margin-bottom: 14px;
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid var(--border-subtle);
+  margin: 3rem 0;
+}
+
+/* Compact dated list (recent posts) */
+
+.content-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 -0.75rem;
+}
+
+.content-item {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  gap: 16px;
+  align-items: baseline;
+  font-size: var(--font-size-small);
+  padding: 0.7rem 0.75rem;
+  border-radius: var(--radius-sm);
+  transition: background var(--transition-fast);
+}
+
+.content-item:hover {
+  background: var(--bg-subtle);
+}
+
+.content-item__date {
+  color: var(--dim);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-mono);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.content-item__link {
+  color: var(--text);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.content-item:hover .content-item__link {
+  color: var(--accent);
+}
+
+/* Annotated list (work, projects, presentations, blog) */
+
+.annotated-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.annotated-list__item {
+  padding: 1.4rem 0;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.annotated-list__item:last-child {
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+/* Logo variant: a left gutter, with the logo sized to fit the box rather than
+   to a fixed height — wordmarks and square app icons have very different
+   proportions and both need to sit comfortably in the same column. */
+
+.annotated-list--with-logos .annotated-list__item {
+  display: grid;
+  grid-template-columns: 132px 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+/* The gutter leaves too little room for title + company + date on one line,
+   so stack the title over a company/date meta line. */
+.annotated-list--with-logos .annotated-list__row {
+  display: block;
+}
+
+.annotated-list--with-logos .annotated-list__title {
+  margin-bottom: 0.2rem;
+}
+
+.annotated-list--with-logos .annotated-list__meta {
+  margin-left: 0.75rem;
+}
+
+.annotated-list__logo a {
+  display: block;
+  text-decoration: none;
+  transition: opacity var(--transition-fast);
+}
+
+.annotated-list__logo a:hover {
+  opacity: 0.72;
+}
+
+.company-logo {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  max-height: 44px;
+  object-fit: contain;
+  object-position: left top;
+}
+
+/* Square artwork reads smaller than a wordmark at equal height, so give it a
+   little more room. The rounded corner is part of the icon, not a frame. */
+.company-logo--square {
+  max-height: 60px;
+  border-radius: 12px;
+}
+
+.company-logo--letter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-sm);
+  font-size: 1.3rem;
+  font-weight: 620;
+  letter-spacing: -0.02em;
+  color: var(--dim);
+  background: var(--bg-subtle);
+  user-select: none;
+}
+
+/* Swap between light- and dark-ink logo variants. */
+.company-logo--dark-only {
+  display: none;
+}
+
+[data-theme="dark"] .company-logo--light-only {
+  display: none;
+}
+
+[data-theme="dark"] .company-logo--dark-only {
+  display: block;
+}
+
+.annotated-list__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 0.75rem;
+}
+
+.annotated-list__subtitle a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.annotated-list__subtitle a:hover {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.annotated-list__title {
+  font-size: 1.25rem;
+  font-weight: 620;
+  line-height: 1.3;
+  letter-spacing: -0.025em;
+  margin: 0;
+}
+
+.annotated-list__title a {
+  color: var(--text);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.annotated-list__title a:hover {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.annotated-list__meta {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.03em;
+  color: var(--dim);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  margin-left: auto;
+}
+
+.annotated-list__subtitle {
+  color: var(--dim);
+  font-size: var(--font-size-small);
+}
+
+.annotated-list__note {
+  margin: 0.45rem 0 0;
+  max-width: 42rem;
+  color: var(--text-secondary);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* The description is rendered markdown, so its paragraphs would otherwise
+   inherit the global 2rem paragraph margin and open a gap before the tags. */
+.annotated-list__note p {
+  margin: 0 0 0.75rem;
+}
+
+.annotated-list__note p:last-child {
+  margin-bottom: 0;
+}
+
+/* The description sits inside the entry's own <li>, so a list in it counts as
+   nested and would otherwise get the hollow second-level marker. */
+.annotated-list__note ul,
+.annotated-list__note ol {
+  list-style: disc;
+  margin: 0;
+  padding-left: 1.15rem;
+}
+
+.annotated-list__note ol {
+  list-style: decimal;
+}
+
+.annotated-list__note li {
+  margin-bottom: 0.25rem;
+}
+
+.annotated-list__note li:last-child {
+  margin-bottom: 0;
+}
+
+.annotated-list__note code {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 0.1em 0.35em;
+}
+
+.annotated-list__links {
+  margin-top: 0.7rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1rem;
+  font-size: var(--font-size-small);
+}
+
+.annotated-list__links a {
+  text-decoration: none;
+}
+
+.annotated-list__links a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.annotated-list__links-muted {
+  color: var(--dim);
+}
+
+.annotated-list__group {
+  font-size: 1.4rem;
+  font-weight: 650;
+  letter-spacing: -0.03em;
+  margin: 2.75rem 0 0.5rem;
+}
+
+.annotated-list__group:first-child {
+  margin-top: 0;
+}
+
+/* Intro copy under a page title */
+
+.page-intro {
+  max-width: 40rem;
+  color: var(--text-secondary);
+  margin-bottom: 3rem;
+}
+
+.page-intro p:last-child {
+  margin-bottom: 0;
+}
+
+/* Grouped sections of talks */
+
+.talk-section + .talk-section {
+  margin-top: 3.5rem;
+}
+
+.talk-section__heading {
+  font-size: 1.5rem;
+  font-weight: 650;
+  letter-spacing: -0.03em;
+  margin: 0 0 1rem;
+}
+
+/* The talk lists come straight from markdown: each list item is one talk,
+   with the link as its first paragraph and the description below. */
+
+.talk-list ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.talk-list li {
+  padding: 1.15rem 0;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.talk-list li:last-child {
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.talk-list li > p {
+  margin: 0;
+}
+
+.talk-list li > p:first-child {
+  font-size: 1.25rem;
+  font-weight: 620;
+  line-height: 1.3;
+  letter-spacing: -0.025em;
+}
+
+.talk-list li > p:first-child a {
+  color: var(--text);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.talk-list li > p:first-child a:hover {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.talk-list li > p + p {
+  margin-top: 0.4rem;
+  max-width: 42rem;
+  color: var(--text-secondary);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.talk-list code {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 0.1em 0.35em;
+}
+
+/* Blog post pages */
+
+.post-date {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  letter-spacing: 0.03em;
+  color: var(--dim);
+  font-variant-numeric: tabular-nums;
+}
+
+.back-link {
+  margin-top: 3rem;
+  font-size: var(--font-size-small);
+}
+
+.back-link a {
+  color: var(--dim);
+  text-decoration: none;
+}
+
+.back-link a:hover {
+  color: var(--accent);
+}
+
+/* Shiki emits both themes; show the one matching the active theme. */
+.prose .astro-code,
+.prose .astro-code span {
+  background-color: var(--shiki-light-bg) !important;
+  color: var(--shiki-light) !important;
+}
+
+[data-theme="dark"] .prose .astro-code,
+[data-theme="dark"] .prose .astro-code span {
+  background-color: var(--shiki-dark-bg) !important;
+  color: var(--shiki-dark) !important;
+}
+
+/* Tags */
+
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.85rem;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.75rem;
+  /* Reset line-height so padding, not leading, controls the pill height. */
+  line-height: 1;
+  color: var(--text-secondary);
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  padding: 0.34rem 0.5rem;
+  white-space: nowrap;
+}
+
+/* Contact */
+
+.contact-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.contact-list__item {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 1rem;
+  align-items: baseline;
+  padding: 0.85rem 0;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.contact-list__item:last-child {
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.contact-list__key {
+  color: var(--dim);
+  font-size: var(--font-size-small);
+}
+
+.contact-list__value {
+  word-break: break-word;
+}
+
+/* Empty / placeholder state */
+
+.placeholder {
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  color: var(--dim);
+  font-size: var(--font-size-small);
+  line-height: 1.6;
+}
+
+.placeholder p {
+  margin: 0;
+}
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+
+.footer {
+  margin-top: 64px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border-subtle);
+  font-size: var(--font-size-small);
+  color: var(--dim);
+}
+
+.footer a {
+  color: var(--dim);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.footer a:hover {
+  color: var(--text);
+}
+
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+
+@media (max-width: 600px) {
+  body {
+    line-height: 1.7;
+  }
+
+  .main-content {
+    padding: 2.5rem 1.25rem 3.5rem;
+  }
+
+  .header {
+    margin-bottom: 2.75rem;
+  }
+
+  .header__nav {
+    gap: 0.5rem 1.1rem;
+    font-size: 1rem;
+  }
+
+  .header__nav-link {
+    padding: 0.2rem 0;
+  }
+
+  /* Stacked, with the heading leading rather than the photo. The float only
+     makes sense once there's room to wrap text beside it. */
+  .home-intro {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .home-heading {
+    order: 1;
+    margin-bottom: 1.25rem;
+  }
+
+  .headshot {
+    order: 2;
+    float: none;
+    display: block;
+    width: 116px;
+    height: 116px;
+    margin: 0 0 1.75rem 0;
+  }
+
+  .home-intro p {
+    order: 3;
+  }
+
+  .page-header {
+    margin-bottom: 2rem;
+  }
+
+  .page-header__description {
+    font-size: 1rem;
+  }
+
+  .content-list {
+    margin: 0;
+  }
+
+  .content-item {
+    display: block;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border-subtle);
+    border-radius: 0;
+  }
+
+  .content-item:hover {
+    background: none;
+  }
+
+  .content-item__date {
+    display: block;
+    margin-bottom: 0.15rem;
+  }
+
+  .content-item__link {
+    font-size: 1.0625rem;
+  }
+
+  .annotated-list__item {
+    padding: 1.25rem 0;
+  }
+
+  /* Too narrow for a gutter — stack the logo above the entry instead. */
+  .annotated-list--with-logos .annotated-list__item {
+    display: block;
+  }
+
+  .annotated-list__logo {
+    margin-bottom: 0.85rem;
+  }
+
+  .company-logo {
+    max-height: 38px;
+    max-width: min(200px, 100%);
+  }
+
+  .company-logo--square {
+    max-height: 52px;
+  }
+
+  .company-logo--letter {
+    width: 44px;
+    height: 44px;
+  }
+
+  .annotated-list__title {
+    font-size: 1.1875rem;
+  }
+
+  .annotated-list__meta {
+    margin-left: 0;
+  }
+
+  .contact-list__item {
+    grid-template-columns: 1fr;
+    gap: 0.15rem;
+  }
+
+  .divider {
+    margin: 2.5rem 0;
+  }
+
+  .footer {
+    margin-top: 3.5rem;
+    padding-top: 1.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

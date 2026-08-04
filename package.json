@@ -1,0 +1,24 @@
+{
+  "name": "personal-site",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "lint": "oxlint"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.3",
+    "astro": "^7.1.5"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@types/node": "^24.13.2",
+    "oxlint": "^1.71.0",
+    "typescript": "~6.0.2",
+    "zod": "^4.4.3"
+  }
+}
