@@ -6,7 +6,8 @@
 export const site = {
   name: "Brandon Howe",
   email: "brandon.howe006@gmail.com",
-  description: "Personal site of Brandon Howe.",
+  description:
+    "CS + math student at NJIT, software developer at Mechanical Solutions. Looking to move into AI safety research.",
 };
 
 export const nav = [

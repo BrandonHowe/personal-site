@@ -3,9 +3,6 @@ heading: Hi, I'm Brandon Howe
 # The page reads better without a visible title, but an h1 still needs to
 # exist for screen readers and search engines. Flip to false to show it.
 hideHeading: true
-description: >-
-  Brandon Howe — CS + Math student at NJIT, software developer at Mechanical
-  Solutions, moving into AI safety research.
 ---
 
 I'm a junior studying CS + Math at [New Jersey Institute of Technology (NJIT)](https://en.wikipedia.org/wiki/New_Jersey_Institute_of_Technology). I've also been working at [Mechanical Solutions](https://www.mechsol.com) for a bit over 4 years. Over the past year I have been upskilling in [AI safety research](/blog/why-im-switching-to-ai-safety). I'm located in New Jersey.
