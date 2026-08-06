@@ -1,6 +1,6 @@
 ---
 title: "Why I'm switching to AI safety"
-date: 2026-07-18
+date: 2026-07-27
 description: >-
   Why I'm moving from earning to give toward technical AI safety work
 ---
