@@ -384,7 +384,9 @@ hr {
   overflow-wrap: anywhere;
 }
 
-.prose img {
+/* Scoped to post bodies, not all .prose — the home page intro is .prose too,
+   and its floated headshot must keep its own size and position. */
+.post-body img {
   display: block;
   margin: var(--space-lg) auto;
   border-radius: var(--radius-sm);
@@ -393,7 +395,7 @@ hr {
 /* Charts and figures are wider than they are tall and get cramped at the
    text measure, so let them spill past it once there's room either side. */
 @media (min-width: 1024px) {
-  .prose img {
+  .post-body img {
     width: 920px;
     max-width: calc(100vw - 3rem);
     margin-left: 50%;
