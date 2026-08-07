@@ -1,5 +1,5 @@
 ---
-import { getCollection } from "astro:content";
+import { getCollection, getEntry, render } from "astro:content";
 import Base from "../../layouts/Base.astro";
 import PageHeader from "../../components/PageHeader.astro";
 import { pageMeta } from "../../config";
@@ -9,10 +9,18 @@ const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
 );
 const { title, meta } = pageMeta.blog;
+
+const page = await getEntry("pages", "blog");
+if (!page) throw new Error("Missing src/content/pages/blog.md");
+const { Content: Intro } = await render(page);
 ---
 
 <Base title={title} description={meta}>
   <PageHeader title={title} />
+
+  <div class="prose page-intro">
+    <Intro />
+  </div>
 
   {
     posts.length > 0 ? (
