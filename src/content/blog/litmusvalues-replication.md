@@ -1,6 +1,6 @@
 ---
 title: "LLM stated vs revealed value preferences"
-date: 2026-07-01
+date: 2026-06-01
 description: >-
   A replication of Chiu et al. on the gap between what models say they value
   and what they act on, extended to newer models and to steering the gap.
