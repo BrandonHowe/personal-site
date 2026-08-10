@@ -12,8 +12,8 @@ rows:
     label: Brandon Howe
     href: https://www.linkedin.com/in/brandon-howe-12a60a18b/
   - key: Résumé
-    label: brandon-howe-resume.pdf
-    href: /brandon-howe-resume.pdf
+    label: brandon-howe-resume-2026-08-09.pdf
+    href: /brandon-howe-resume-2026-08-09.pdf
   - key: Location
     label: Newark, NJ
 ---
