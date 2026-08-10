@@ -23,7 +23,7 @@ export const nav = [
 export const elsewhere = [
   { label: "GitHub", href: "https://github.com/BrandonHowe" },
   { label: "LinkedIn", href: "https://www.linkedin.com/in/brandon-howe-12a60a18b/" },
-  { label: "Résumé", href: "/brandon-howe-resume-2026-08-09.pdf" },
+  { label: "Résumé", href: "/brandon-howe-resume.pdf" },
 ];
 
 /** Titles and intro lines for the list pages. */
