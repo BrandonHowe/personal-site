@@ -15,7 +15,7 @@ export const nav = [
   { label: "work", href: "/work" },
   { label: "projects", href: "/projects" },
   { label: "blog", href: "/blog" },
-  { label: "presentations", href: "/presentations" },
+  { label: "clubs", href: "/clubs" },
   { label: "contact", href: "/contact" },
 ];
 
@@ -41,7 +41,10 @@ export const pageMeta = {
     title: "Blog",
     meta: "Writing by Brandon Howe on AI safety, philosophy, and software.",
   },
-  presentations: {
-    title: "Presentations",
+  clubs: {
+    title: "Clubs",
+  },
+  sigMath: {
+    title: "SIG Math",
   },
 };

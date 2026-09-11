@@ -5,8 +5,8 @@ import PageHeader from "../components/PageHeader.astro";
 import { pageMeta } from "../config";
 import { isoDate, longDate } from "../lib/dates";
 
-const page = await getEntry("pages", "presentations");
-if (!page) throw new Error("Missing src/content/pages/presentations.md");
+const page = await getEntry("pages", "sig-math");
+if (!page) throw new Error("Missing src/content/pages/sig-math.md");
 const { Content: Intro } = await render(page);
 
 /** Newest first; undated talks keep their listed order, after the dated ones. */
@@ -20,13 +20,13 @@ function byDateDesc<T extends { date?: Date }>(items: T[]): T[] {
 }
 
 const groups = (await getCollection("talks"))
-  .sort((a, b) => a.data.order - b.data.order)
+  .filter((entry) => entry.id === "sig-math")
   .map((entry) => ({
     heading: entry.data.title,
     talks: byDateDesc(entry.data.talks),
   }));
 
-const { title } = pageMeta.presentations;
+const { title } = pageMeta.sigMath;
 ---
 
 <Base title={title} description={page.data.description}>
